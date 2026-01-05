@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard - MediBook{% endblock %}
+
+{% block content %}
+<div class="container page-spacer">
+    <div class="dashboard-header">
+        <h2>Dr. {{ current_user.name }}'s Dashboard</h2>
+    </div>
+
+    <h3>Upcoming Appointments</h3>
+    {% if appointments %}
+    {% for appt in appointments %}
+    <div class="appointment-item">
+        <div>
+            <h4>Patient: {{ appt.patient.name }}</h4>
+            <p style="color: #666; font-size: 0.9rem;">
+                📅 {{ appt.date_time.strftime('%B %d, %Y') }} at {{ appt.date_time.strftime('%I:%M %p') }}
+            </p>
+            {% if appt.notes %}
+            <p style="font-style: italic; color: #888; font-size: 0.9rem;">Notes: {{ appt.notes }}</p>
+            {% endif %}
+            <span class="status-badge status-{{ appt.status }}">
+                {{ appt.status|title }} - {{ appt.type|title }}
+            </span>
+        </div>
+        <div>
+            {% if appt.status == 'pending' %}
+            <span style="color: #F59E0B; font-size: 0.9rem;">⏳ Pending Confirmation</span>
+            {% elif appt.type == 'online' and appt.status == 'confirmed' %}
+            <a href="{{ appt.meeting_link }}" target="_blank" class="nav-btn" style="font-size: 0.9rem;">Start Call</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <h3>No appointments scheduled</h3>
+        <p>Your schedule is clear for now.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Hospital - MediBook{% endblock %}
+
+{% block content %}
+<div class="container page-spacer" style="display: flex; gap: 2rem; padding-top: 120px;">
+    <!-- Sidebar Filters -->
+    <aside class="sidebar-filters" style="width: 250px; flex-shrink: 0;">
+        <div class="filter-card">
+            <h3>Filter Hospitals</h3>
+            <form action="{{ url_for('list_hospitals') }}" method="GET">
+                <div class="filter-group">
+                    <label>City</label>
+                    <select name="city" onchange="this.form.submit()">
+                        <option value="">All Cities</option>
+                        {% for c in cities %}
+                        <option value="{{ c }}" {% if request.args.get('city')==c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Country</label>
+                    <select name="country" onchange="this.form.submit()">
+                        <option value="">All Countries</option>
+                        {% for c in countries %}
+                        <option value="{{ c }}" {% if request.args.get('country')==c %}selected{% endif %}>{{ c }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <a href="{{ url_for('list_hospitals') }}" class="btn-clear">Clear Filters</a>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Results Grid -->
+    <div class="results-grid" style="flex-grow: 1;">
+        <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+            <h2>Partner Hospitals</h2>
+            <p>{{ hospitals|length }} medical centers found</p>
+        </div>
+
+        <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));">
+            {% for hospital in hospitals %}
+            <div class="glass-light tilt-card" style="padding: 2rem; min-height: 400px; display: flex; flex-direction: column;">
+                {% if hospital.image_url %}
+                <img src="{{ hospital.image_url }}" alt="{{ hospital.name }}" 
+                    style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem;">
+                {% endif %}
+                
+                <div style="flex-grow: 1;">
+                    <h3 style="color: var(--secondary); margin-bottom: 0.5rem;">{{ hospital.name }}</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        📍 {{ hospital.city }}, {{ hospital.country }}
+                    </p>
+                    
+                    {% if hospital.specialties %}
+                    <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 500;">
+                        Specialties: {{ hospital.specialties }}
+                    </p>
+                    {% endif %}
+
+                    <!-- Associated Doctors -->
+                    {% if hospital.doctors %}
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                        <h4 style="font-size: 1rem; color: var(--secondary); margin-bottom: 1rem;">
+                            Associated Doctors ({{ hospital.doctors|length }})
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            {% for doctor in hospital.doctors[:3] %}
+                            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: var(--bg-light); border-radius: 8px;">
+                                <div class="doctor-avatar" style="width: 40px; height: 40px; font-size: 1rem; flex-shrink: 0;">
+                                    {{ doctor.user.name[0] }}
+                                </div>
+                                <div style="flex-grow: 1; min-width: 0;">
+                                    <div style="font-weight: 600; font-size: 0.9rem;">Dr. {{ doctor.user.name }}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">{{ doctor.specialization }}</div>
+                                </div>
+                                <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                                    class="btn btn-sm btn-primary" style="flex-shrink: 0; padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    Book
+                                </a>
+                            </div>
+                            {% endfor %}
+                            {% if hospital.doctors|length > 3 %}
+                            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">
+                                +{{ hospital.doctors|length - 3 }} more doctor{{ 's' if (hospital.doctors|length - 3) > 1 else '' }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0;">
+                        <p style="font-size: 0.9rem; color: var(--text-muted); text-align: center;">
+                            No doctors associated yet
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="no-results">
+                <h3>No hospitals found</h3>
+                <p>Try adjusting your search filters.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

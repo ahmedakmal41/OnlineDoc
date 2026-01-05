@@ -1,0 +1,51 @@
+{% extends "admin/base_admin.html" %}
+
+{% block admin_content %}
+<h2>Dashboard Overview</h2>
+
+<div class="card-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2rem;">
+    <div class="stat-card">
+        <div style="font-size: 0.9rem; color: #888;">Users</div>
+        <div class="stat-val">{{ total_users }}</div>
+    </div>
+    <div class="stat-card">
+        <div style="font-size: 0.9rem; color: #888;">Doctors</div>
+        <div class="stat-val">{{ total_doctors }}</div>
+    </div>
+    <div class="stat-card">
+        <div style="font-size: 0.9rem; color: #888;">Total Bookings</div>
+        <div class="stat-val">{{ total_appts }}</div>
+    </div>
+    <div class="stat-card">
+        <div style="font-size: 0.9rem; color: #888;">Pending</div>
+        <div class="stat-val" style="color: orange;">{{ pending_appts }}</div>
+    </div>
+</div>
+
+<h3 style="margin-top: 3rem; margin-bottom: 1.5rem;">Recent Appointments</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appt in recent_appts %}
+        <tr>
+            <td>{{ appt.date_time.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ appt.patient.name }}</td>
+            <td>{{ appt.doctor.user.name }}</td>
+            <td><span class="status-badge status-{{ appt.status }}">{{ appt.status }}</span></td>
+            <td>
+                <a href="{{ url_for('admin_appt_action', id=appt.id, action='confirm') }}"
+                    style="color: green; margin-right: 0.5rem;">Confirm</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

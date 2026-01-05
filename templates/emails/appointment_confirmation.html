@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmed</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2A9D8F;
+        }
+        .header h1 {
+            color: #2A9D8F;
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .appointment-details {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2A9D8F;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .detail-row {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #264653;
+            min-width: 120px;
+        }
+        .detail-value {
+            color: #333;
+        }
+        .status-badge {
+            display: inline-block;
+            background-color: #2A9D8F;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #2A9D8F;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+        .button:hover {
+            background-color: #21867a;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>✅ Appointment Confirmed</h1>
+            <p style="color: #666; margin-top: 10px;">Your appointment has been confirmed!</p>
+        </div>
+
+        <div class="content">
+            <p>Dear {{ patient.name }},</p>
+            
+            <p>We're pleased to inform you that your appointment has been confirmed. Here are the details:</p>
+
+            <div class="appointment-details">
+                <div class="detail-row">
+                    <span class="detail-label">👨‍⚕️ Doctor:</span>
+                    <span class="detail-value">Dr. {{ doctor.user.name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">🏥 Specialization:</span>
+                    <span class="detail-value">{{ doctor.specialization }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">📅 Date & Time:</span>
+                    <span class="detail-value">{{ appointment.date_time.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">💬 Type:</span>
+                    <span class="detail-value">{{ appointment.type|title }} Consultation</span>
+                </div>
+                {% if appointment.type == 'online' and appointment.meeting_link %}
+                <div class="detail-row">
+                    <span class="detail-label">🔗 Meeting Link:</span>
+                    <span class="detail-value">
+                        <a href="{{ appointment.meeting_link }}" style="color: #2A9D8F; text-decoration: none;">
+                            Join Video Call
+                        </a>
+                    </span>
+                </div>
+                {% endif %}
+                {% if appointment.notes %}
+                <div class="detail-row" style="flex-direction: column; align-items: flex-start;">
+                    <span class="detail-label">📝 Notes:</span>
+                    <span class="detail-value" style="margin-top: 5px;">{{ appointment.notes }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div style="text-align: center;">
+                <span class="status-badge">CONFIRMED</span>
+            </div>
+
+            {% if appointment.type == 'online' and appointment.meeting_link %}
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ appointment.meeting_link }}" class="button">Join Video Call</a>
+            </div>
+            {% endif %}
+
+            <p style="margin-top: 30px;">
+                <strong>Important Reminders:</strong>
+            </p>
+            <ul style="color: #666;">
+                <li>Please arrive on time or join the video call a few minutes early</li>
+                <li>If you need to cancel or reschedule, please contact us as soon as possible</li>
+                {% if appointment.type == 'online' %}
+                <li>Ensure you have a stable internet connection for the video consultation</li>
+                <li>Test your camera and microphone before the appointment</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing MediBook!</p>
+            <p style="margin-top: 10px;">
+                If you have any questions, please don't hesitate to contact us.
+            </p>
+            <p style="margin-top: 20px; font-size: 12px; color: #999;">
+                This is an automated email. Please do not reply to this message.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

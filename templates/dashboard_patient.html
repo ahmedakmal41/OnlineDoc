@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments - MediBook{% endblock %}
+
+{% block content %}
+<div class="container page-spacer">
+    <div class="dashboard-header"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+        <div>
+            <h2 style="font-size: 2.5rem; color: var(--secondary);">My Appointments</h2>
+            <p style="color: var(--text-muted);">Manage your health journey.</p>
+        </div>
+        <a href="{{ url_for('list_doctors') }}" class="btn-primary" style="padding: 1rem 2rem; border-radius: 50px;">
+            + Book New Appointment
+        </a>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-number">{{ appointments|length }}</div>
+            <div class="stat-label">Total Appointments</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #F59E0B, #F97316);">
+            <div class="stat-number">
+                {{ appointments | selectattr('status', 'equalto', 'pending') | list | length }}
+            </div>
+            <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #E9C46A, #F4A261);">
+            <div class="stat-number">
+                {{ appointments | selectattr('status', 'equalto', 'confirmed') | list | length }}
+            </div>
+            <div class="stat-label">Confirmed</div>
+        </div>
+    </div>
+
+    {% if appointments %}
+    <div class="appointments-list">
+        {% for appt in appointments|sort(attribute='date_time', reverse=true) %}
+        <div class="appt-card status-{{ appt.status }}">
+            <div class="appt-date-box">
+                <div class="appt-date-day">{{ appt.date_time.strftime('%d') }}</div>
+                <div class="appt-date-month">{{ appt.date_time.strftime('%b') }}</div>
+            </div>
+
+            <div class="appt-info" style="flex-grow: 1;">
+                <h4>Dr. {{ appt.doctor.user.name }}</h4>
+                <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; color: var(--primary);">
+                    {{ appt.doctor.specialization }}
+                </p>
+                <p style="margin-top: 0.5rem;">
+                    <span style="margin-right: 1.5rem;">🕒 {{ appt.date_time.strftime('%I:%M %p') }}</span>
+                    <span>📍 {{ appt.type|title }} Consultation</span>
+                </p>
+            </div>
+
+            <div class="appt-actions" style="text-align: right;">
+                <span class="status-badge" style="
+                        display: inline-block; 
+                        padding: 0.5rem 1rem; 
+                        border-radius: 50px; 
+                        font-size: 0.85rem; 
+                        font-weight: 600; 
+                        text-transform: uppercase;
+                        background: {% if appt.status == 'pending' %}#FFF4E6; color: #F59E0B;{% elif appt.status == 'confirmed' or appt.status == 'scheduled' %}#E6FFFA; color: #38B2AC;{% elif appt.status == 'cancelled' %}#FFF5F5; color: #E53E3E;{% else %}#EBF8FF; color: #4299E1;{% endif %}
+                        margin-bottom: 1rem;
+                    ">
+                    {{ appt.status|title }}
+                </span>
+                <br>
+                {% if appt.status == 'pending' %}
+                <small style="color: #F59E0B; font-size: 0.85rem;">Awaiting admin confirmation</small>
+                {% elif appt.type == 'online' and appt.status == 'confirmed' %}
+                <a href="{{ appt.meeting_link }}" target="_blank" class="nav-btn"
+                    style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+                    Join Video Call
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-light" style="padding: 4rem; margin-top: 2rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📅</div>
+        <h3>No appointments found</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">You haven't booked any appointments yet.</p>
+        <a href="{{ url_for('list_doctors') }}" class="btn-primary">Find a Doctor</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

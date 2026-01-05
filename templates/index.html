@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Full Screen Hero with Video -->
+<section class="hero-section" style="position: relative;">
+    <div class="video-overlay"></div>
+    <video autoplay muted loop playsinline class="hero-video">
+        <source src="{{ url_for('static', filename='assets/bg.mp4') }}" type="video/mp4">
+    </video>
+
+    <div class="hero-content">
+        <h1 class="fade-in-up">Your Health, <span class="highlight typing-text"></span><span
+                class="typing-cursor"></span></h1>
+        <p class="fade-in-up delay-1">Experience premium healthcare with world-class specialists from the comfort of
+            your sanctuary.</p>
+        <div class="hero-buttons fade-in-up delay-2">
+            <a href="{{ url_for('register') }}" class="btn btn-primary pulse">Start Your Journey</a>
+            <a href="#specialists" class="btn btn-outline">Meet Specialists</a>
+        </div>
+    </div>
+
+    <!-- SVG Wave Divider -->
+    <div class="wave-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Grid (Overlapping Hero) -->
+<section class="features-section container">
+    <div class="card-grid">
+        <div class="feature-card glass tilt-card reveal-on-scroll">
+            <div class="icon-wrapper">🎥</div>
+            <h3>Virtual Consultations</h3>
+            <p>Secure, high-fidelity video calls with top specialists worldwide.</p>
+        </div>
+        <div class="feature-card glass tilt-card reveal-on-scroll" style="transition-delay: 0.1s;">
+            <div class="icon-wrapper">🏥</div>
+            <h3>Premium Clinics</h3>
+            <p>Priority access to our curated network of 5-star physical facilities.</p>
+        </div>
+        <div class="feature-card glass tilt-card reveal-on-scroll" style="transition-delay: 0.2s;">
+            <div class="icon-wrapper">🛡️</div>
+            <h3>24/7 Care Team</h3>
+            <p>Dedicated medical concierge available round the clock.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Medical Specialties -->
+<section class="container" style="margin-bottom: 6rem;">
+    <div class="section-header reveal-on-scroll">
+        <h2>Expertise Areas</h2>
+        <p>Comprehensive care across 30+ specialties</p>
+    </div>
+    <div class="services-grid">
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">❤️</div>
+            <h4>Cardiology</h4>
+            <p style="font-size: 0.9rem; color: #666;">Heart health & surgery</p>
+        </div>
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">🧠</div>
+            <h4>Neurology</h4>
+            <p style="font-size: 0.9rem; color: #666;">Brain & spine care</p>
+        </div>
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">🧬</div>
+            <h4>Genetics</h4>
+            <p style="font-size: 0.9rem; color: #666;">DNA analysis & more</p>
+        </div>
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">👶</div>
+            <h4>Pediatrics</h4>
+            <p style="font-size: 0.9rem; color: #666;">Child healthcare</p>
+        </div>
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">👀</div>
+            <h4>Ophthalmology</h4>
+            <p style="font-size: 0.9rem; color: #666;">Vision & eye surgery</p>
+        </div>
+        <div class="service-item reveal-on-scroll">
+            <div class="service-icon">🦷</div>
+            <h4>Dental</h4>
+            <p style="font-size: 0.9rem; color: #666;">Cosmetic & implants</p>
+        </div>
+    </div>
+</section>
+
+<!-- Global Locations -->
+<section class="locales-section">
+    <!-- Top Wave -->
+    <div class="wave-divider" style="top: 0; transform: rotate(0deg); bottom: auto;">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <div class="container" style="position: relative; z-index: 5;">
+        <div class="section-header reveal-on-scroll">
+            <h2>Global Presence</h2>
+            <p>World-class facilities in major capitals</p>
+        </div>
+        <div class="card-grid">
+            <div class="city-card tilt-card reveal-on-scroll">
+                <img src="https://images.unsplash.com/photo-1496442226666-8d4a0e94f389?w=800&auto=format&fit=crop"
+                    class="city-bg" alt="New York">
+                <div class="city-overlay">
+                    <h3>New York</h3>
+                    <p>Manhattan Medical Center</p>
+                </div>
+            </div>
+            <div class="city-card tilt-card reveal-on-scroll" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&auto=format&fit=crop"
+                    class="city-bg" alt="London">
+                <div class="city-overlay">
+                    <h3>London</h3>
+                    <p>Westminster Health</p>
+                </div>
+            </div>
+            <div class="city-card tilt-card reveal-on-scroll" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1512453979798-5ea904acfb5a?w=800&auto=format&fit=crop"
+                    class="city-bg" alt="Dubai">
+                <div class="city-overlay">
+                    <h3>Dubai</h3>
+                    <p>Emirates Hill Clinic</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trusted Partners -->
+        <div class="section-header reveal-on-scroll" style="margin-top: 6rem;">
+            <p>TRUSTED BY LEADING INSTITUTIONS</p>
+        </div>
+        <div class="logos-grid reveal-on-scroll">
+            <h2 style="color: #ccc;">MAYO CLINIC</h2>
+            <h2 style="color: #ccc;">CLEVELAND CLINIC</h2>
+            <h2 style="color: #ccc;">HOPKINS MEDICINE</h2>
+            <h2 style="color: #ccc;">NHS</h2>
+        </div>
+    </div>
+
+    <!-- Bottom Wave -->
+    <div class="wave-divider">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path
+                d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                class="shape-fill"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Specialists Section -->
+<section id="specialists" class="specialists-section container" style="position: relative;">
+    <!-- Ambient Background Blob -->
+    <div class="blob-bg" style="top: 10%; left: -10%;"></div>
+
+    <div class="section-header reveal-on-scroll">
+        <h2>Elite Specialists</h2>
+        <p>Curated excellence for your well-being</p>
+    </div>
+
+    <div class="card-grid">
+        {% for doctor in doctors %}
+        <div class="doctor-card glass-light tilt-card reveal-on-scroll">
+            <div class="doctor-avatar">
+                {{ doctor.user.name[0] }}
+            </div>
+            <h4>Dr. {{ doctor.user.name }}</h4>
+            <p class="specialization">{{ doctor.specialization }}</p>
+
+            <div class="doctor-meta">
+                <span>{{ doctor.experience_years or '10+' }} Years Exp.</span>
+                <span>${{ doctor.consultation_fee }} / Visit</span>
+            </div>
+
+            <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" class="btn btn-sm btn-primary">Book
+                Appointment</a>
+        </div>
+        {% else %}
+        <p style="text-align: center; width: 100%; color: #888;">Our specialists are currently fully booked. <a
+                href="{{ url_for('register') }}">Join as a practitioner</a>.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Load Interactions Script -->
+<script src="{{ url_for('static', filename='js/interactions.js') }}"></script>
+{% endblock %}

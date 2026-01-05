@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Doctor - MediBook{% endblock %}
+
+{% block content %}
+<div class="container page-spacer" style="display: flex; gap: 2rem; padding-top: 120px;">
+    <!-- Sidebar Filters -->
+    <aside class="sidebar-filters" style="width: 250px; flex-shrink: 0;">
+        <div class="filter-card">
+            <h3>Filter Results</h3>
+            <form action="{{ url_for('list_doctors') }}" method="GET">
+                <div class="filter-group">
+                    <label>Specialty</label>
+                    <select name="specialty" onchange="this.form.submit()">
+                        <option value="">All Specialties</option>
+                        {% for s in specialties %}
+                        <option value="{{ s }}" {% if request.args.get('specialty')==s %}selected{% endif %}>{{ s }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>City</label>
+                    <select name="city" onchange="this.form.submit()">
+                        <option value="">All Cities</option>
+                        {% for c in cities %}
+                        <option value="{{ c }}" {% if request.args.get('city')==c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Country</label>
+                    <select name="country" onchange="this.form.submit()">
+                        <option value="">All Countries</option>
+                        {% for c in countries %}
+                        <option value="{{ c }}" {% if request.args.get('country')==c %}selected{% endif %}>{{ c }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <a href="{{ url_for('list_doctors') }}" class="btn-clear">Clear Filters</a>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Results Grid -->
+    <div class="results-grid" style="flex-grow: 1;">
+        <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+            <h2>Top Specialists</h2>
+            <p>{{ doctors|length }} doctors found matching your criteria</p>
+        </div>
+
+        <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+            {% for doctor in doctors %}
+            <div class="doctor-card glass-light tilt-card">
+                <div class="doctor-avatar">{{ doctor.user.name[0] }}</div>
+                <h4>Dr. {{ doctor.user.name }}</h4>
+                <p class="specialization">{{ doctor.specialization }}</p>
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">
+                    📍 {{ doctor.city }}, {{ doctor.country }}
+                </p>
+                {% if doctor.hospital %}
+                <p style="font-size: 0.85rem; color: var(--primary); margin-bottom: 0.5rem; font-weight: 500;">
+                    🏥 {{ doctor.hospital.name }}
+                </p>
+                {% endif %}
+                {% if doctor.education %}
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 0.5rem; font-style: italic;">
+                    {{ doctor.education[:50] }}{% if doctor.education|length > 50 %}...{% endif %}
+                </p>
+                {% endif %}
+                <div class="doctor-meta">
+                    <span>{{ doctor.experience_years or '10+' }} Years Exp.</span>
+                    <span>${{ doctor.consultation_fee }}</span>
+                </div>
+                <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" class="btn btn-sm btn-primary">Book
+                    Now</a>
+            </div>
+            {% else %}
+            <div class="no-results">
+                <h3>No doctors found</h3>
+                <p>Try adjusting your search filters.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

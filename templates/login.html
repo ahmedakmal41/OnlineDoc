@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Login - MediBook{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-sidebar">
+        <!-- Optional: Animated particles could go here if handled by CSS -->
+        <div class="auth-quote">
+            "The art of medicine consists of amusing the patient while nature cures the disease."
+        </div>
+        <div class="auth-author">— Voltaire</div>
+    </div>
+
+    <div class="auth-form-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Please enter your details to sign in.</p>
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="name@company.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••"
+                        required>
+                </div>
+
+                <button type="submit" class="btn-submit">Log In</button>
+            </form>
+
+            <div class="auth-footer" style="text-align: left; margin-top: 1.5rem;">
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up for free</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

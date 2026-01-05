@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - MediBook{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-sidebar">
+        <div class="auth-quote">
+            "Wherever the art of medicine is loved, there is also a love of humanity."
+        </div>
+        <div class="auth-author">— Hippocrates</div>
+    </div>
+
+    <div class="auth-form-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Start your wellness journey today.</p>
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="name">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Jane Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="name@company.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <input type="tel" name="phone" id="phone" class="form-control" placeholder="+1 (555) 000-0000"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="••••••••"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="role">I am a:</label>
+                    <select name="role" id="role" class="form-control" onchange="toggleDoctorFields()">
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+
+                <!-- Doctor-specific fields -->
+                <div id="doctorFields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="specialization">Specialization *</label>
+                        <input type="text" name="specialization" id="specialization" class="form-control" 
+                            placeholder="e.g., Cardiology, Neurology, Pediatrics">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="education">Education *</label>
+                        <textarea name="education" id="education" class="form-control" rows="3" 
+                            placeholder="e.g., MD from Harvard Medical School, Board Certified in Internal Medicine"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="city">City *</label>
+                        <input type="text" name="city" id="city" class="form-control" placeholder="e.g., New York">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="country">Country *</label>
+                        <input type="text" name="country" id="country" class="form-control" placeholder="e.g., USA">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="consultation_fee">Consultation Fee (USD) *</label>
+                        <input type="number" name="consultation_fee" id="consultation_fee" class="form-control" 
+                            placeholder="50" min="0" step="0.01" value="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="experience_years">Years of Experience</label>
+                        <input type="number" name="experience_years" id="experience_years" class="form-control" 
+                            placeholder="10" min="0">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Get Started</button>
+            </form>
+
+            <div class="auth-footer" style="text-align: left; margin-top: 1.5rem;">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleDoctorFields() {
+        const role = document.getElementById('role').value;
+        const doctorFields = document.getElementById('doctorFields');
+        if (role === 'doctor') {
+            doctorFields.style.display = 'block';
+            // Make doctor fields required
+            doctorFields.querySelectorAll('input, textarea').forEach(field => {
+                if (field.name !== 'experience_years') {
+                    field.setAttribute('required', 'required');
+                }
+            });
+        } else {
+            doctorFields.style.display = 'none';
+            // Remove required attribute
+            doctorFields.querySelectorAll('input, textarea').forEach(field => {
+                field.removeAttribute('required');
+            });
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', toggleDoctorFields);
+</script>
+{% endblock %}
